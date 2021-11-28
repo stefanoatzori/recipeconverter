@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<head>
+    <title>Adattatore Quantit&#224; ricette</title>
+    <link rel="icon" href="favicon.png">
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" style="background-color: bisque;">
+
+    <h1 style="display: flex; align-content: center;"><input type="text" style="flex-grow: 1; padding: 10px; text-align: center; font-weight: bold; font-size: 30px;"></h1>
+    <P></P>
+
+    <h1 style="width: 100%;">
+        <div style="display: flex; align-items: center; justify-content: center; align-content: space-between;">
+            <label style="flex-grow: 1; width: 25%; text-align: center;">Ingrediente</label>
+            <label style="flex-grow: 1; width: 25%; text-align: center;">Quantit&#224; ricetta</label>
+            <label style="flex-grow: 1; width: 25%; text-align: center;">Quantit&#224; disponibile</label>
+            <label style="flex-grow: 1; width: 25%; text-align: center;">Nuova Quantit&#224;</label>
+        </div>
+    </h1>
+
+    <h1 ng-repeat="x in records|limitTo:numeroIngredienti track by $index" style="width: 100%;">
+        <div style="display: flex; align-items: center; justify-content: center; align-content: space-between; font-weight: bold; font-size: 20px;">
+            <input type="text" ng-model="ingrediente" style="flex-grow: 1; width: 25%; margin: 20px; padding: 10px; font-weight: bold; font-size: 20px;">
+            <input type="number" ng-model="quantitaricetta" style="flex-grow: 1; width: 25%; margin: 20px; padding: 10px; font-weight: bold; font-size: 20px;">
+            <input type="number" ng-model="quantitadisponibile" style="flex-grow: 1; width: 25%; margin: 20px; padding: 10px; font-weight: bold; font-size: 20px;">
+            <label ng-model="quantitacalcolata$index" style="flex-grow: 1; width: 25%; margin: 20px; padding: 10px;  text-align: center; font-weight: bold; font-size: 30px;"> {{ quantitadisponibile > 0 ? setQuantita(quantitaricetta, quantitadisponibile, $index) : aggiustaQuantita(quantitaricetta, $index) }}</label>
+        </div>
+    </h1>
+
+    <script>
+        var app = angular.module("myApp", []);
+        app.controller("myCtrl", function($scope) {
+
+            $scope.numeroIngredienti = 1
+
+            $scope.records = new Array(100)
+
+            for (var i = 0; i < 100; i++) {
+                $scope.records[i] = "";
+            }
+
+            $scope.setQuantita = (quantitaRicetta, quantitaDisponibile, index) => { 
+                $scope.percentuale = quantitaDisponibile * 100 / quantitaRicetta; 
+
+                return quantitaDisponibile; 
+            }
+
+            $scope.aggiustaQuantita = (quantita, index) => { 
+                if(!isNaN(quantita)) {
+                    $scope.numeroIngredienti = $scope.numeroIngredienti <= (index+1) ? (index+2) : $scope.numeroIngredienti; 
+                }
+                return isNaN((quantita * $scope.percentuale / 100)) ? 0 : (quantita * $scope.percentuale / 100).toFixed(2); 
+            }
+
+        });
+    </script>
+
+</body>
+</html>
