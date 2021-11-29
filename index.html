@@ -42,7 +42,7 @@
             }
 
             $scope.setQty = (recipeQty, availableQty, index) => { 
-                $scope.convertionFactor = availableQty * 100 / recipeQty; 
+                $scope.conversionFactor = availableQty * 100 / recipeQty; 
 
                 return availableQty; 
             }
@@ -51,7 +51,7 @@
                 if(!isNaN(qty)) {
                     $scope.itemsSize = $scope.itemsSize <= (index+1) ? (index+2) : $scope.itemsSize; 
                 }
-                return isNaN((qty * $scope.convertionFactor / 100)) ? 0 : (qty * $scope.convertionFactor / 100).toFixed(2); 
+                return isNaN((qty * $scope.conversionFactor / 100)) ? 0 : (qty * $scope.conversionFactor / 100).toFixed(2); 
             }
 
         });
